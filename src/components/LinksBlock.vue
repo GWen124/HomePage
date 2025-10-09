@@ -387,7 +387,9 @@ onUnmounted(() => {
   text-decoration: none; 
   color: var(--text-color); 
   transition: border-color .2s ease, background-color .2s ease, transform .3s ease, box-shadow .3s ease; 
-  cursor: pointer; 
+  cursor: pointer;
+  position: relative;
+  z-index: 500;
 }
 .link-card.is-placeholder { 
   opacity: 0; 
