@@ -83,9 +83,13 @@ body {
 .container { padding: 0 24px; }
 /* Header */
 header.site-header { 
-  padding:16px 0; 
-  position: relative;
+  padding: 10px 0 0; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  background-color: var(--bg-color);
 }
 header.site-header .container { display:flex; align-items:center; }
 header.site-header strong { font-weight:700; font-size:18px; }
@@ -97,8 +101,8 @@ header.site-header strong { font-weight:700; font-size:18px; }
 
 /* Links */
 .site-links { padding:0; position:relative; z-index:100; flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
-.links-viewport { overflow-x:hidden; overflow-y:hidden; width:100%; padding: 20px 0 0; }
-.links-dots{ display:flex; justify-content:center; gap:10px; margin-top: 15px; margin-bottom: 80px; position:relative; z-index:200; }
+.links-viewport { overflow-x:hidden; overflow-y:hidden; width:100%; padding: 0; }
+.links-dots{ display:flex; justify-content:center; gap:10px; margin-top: 15px; margin-bottom: 0; position:relative; z-index:200; }
 .links-dots .dot{ width:15px; height:5px; border-radius:2.5px; background: var(--text-muted); transition:background .25s ease,width .25s ease,transform .2s ease; cursor:pointer; position:relative; z-index:300; }
 .links-dots .dot:hover{ transform: scale(1.5); }
 .links-dots .dot.active{ background: var(--text-color); width:20px; }
@@ -106,19 +110,24 @@ header.site-header strong { font-weight:700; font-size:18px; }
 
 /* Layout */
 #app { display:flex; flex-direction:column; height:100vh; overflow:hidden; }
-.site-main { flex:1 0 auto; display: flex; flex-direction: column; min-height: 0; }
+.site-main { flex:1 0 auto; display: flex; flex-direction: column; min-height: 0; padding-top: 60px; padding-bottom: 60px; } /* 为固定 Header 和 Footer 预留空间 */
 .site-footer { 
   text-align:center; 
   color: var(--text-muted); 
-  padding: 24px 0 5px; 
-  flex-shrink: 0; 
+  padding: 0 0 5px; 
+  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   background-color: var(--bg-color);
 }
 /* 仅缩小 Footer 文字信息区域字号，不影响社交模块 */
 .site-footer > .container { 
   font-size:15px; 
 }
-footer.site-footer::before{ content:""; display:block; width:70%; height:1px; margin:0 auto 8px; background:linear-gradient(90deg,rgba(0,0,0,0) 0%, var(--border-color) 12%, var(--border-color) 88%, rgba(0,0,0,0) 100%);} 
+footer.site-footer::before{ content:""; display:block; width:70%; height:1px; margin:50px auto 8px; background:linear-gradient(90deg,rgba(0,0,0,0) 0%, var(--border-color) 12%, var(--border-color) 88%, rgba(0,0,0,0) 100%);} 
 /* Footer 主体文本链接：中间向两侧扩张的下划线，颜色继承，略加粗 */
 footer.site-footer a,
 footer.site-footer a:link,
@@ -172,10 +181,16 @@ footer.site-footer a {
   .link-card h3 { font-size: 18px; }
   .link-card p { font-size: 14px; }
   
-  /* 桌面端 LinksBlock 上移 20px */
+  /* 桌面端模块填充优化 */
+  .site-intro {
+    padding: 20px 0;
+  }
+  
   .site-links {
+    padding: 20px 0;
     margin-top: -20px;
     flex: none; /* 覆盖 flex: 1 */
+    transform: translateY(-30px); /* 桌面端上移30px */
   }
   
   /* 桌面端 Footer 上移 30px */
@@ -192,13 +207,31 @@ footer.site-footer a {
   .link-card h3 { font-size: 17px; }
   .link-card p { font-size: 14px; }
   
+  /* 平板端模块填充优化 */
+  .site-intro {
+    padding: 25px 0;
+  }
+  
+  .site-links {
+    padding: 25px 0;
+    transform: translateY(-20px); /* 平板端上移20px */
+  }
+  
+  .site-footer {
+    padding: 0;
+  }
+  
+  /* 平板竖屏深色模式卡片背景不变色 */
+  .dark .link-card {
+    background: var(--bg-color) !important;
+  }
 }
 
 /* 平板竖屏 (481px - 768px) */
 @media (max-width: 768px) and (min-width: 481px) and (orientation: portrait) {
   .site-intro h1 { font-size: 42px; }
-  .site-intro p { font-size: 15px; }
-  .grid .link-card { width: 100%; height: 110px; }
+  .site-intro p { font-size: 16px; }
+  .grid .link-card { width: 100%; height: 120px; }
   .link-card h3 { font-size: 16px; }
   .link-card p { font-size: 13px; }
   .links-dots .dot { width: 12px; height: 4px; }
@@ -206,16 +239,16 @@ footer.site-footer a {
   
   /* 平板竖屏布局优化 */
   .site-intro {
-    padding: 30px 0 20px;
+    padding: 20px 0;
   }
   
   .site-links {
     padding: 20px 0;
+    transform: translateY(-20px); /* 平板竖屏上移20px */
   }
   
   .site-footer {
-    padding: 20px 0 15px;
-    margin-top: auto;
+    padding: 0;
   }
   
   /* 平板竖屏深色模式卡片背景不变色 */
@@ -226,34 +259,33 @@ footer.site-footer a {
 }
 
 /* 平板横屏 (481px - 1024px) */
-@media (max-width: 1024px) and (min-width: 769px) and (orientation: landscape) {
-  .site-intro h1 { font-size: 36px; }
-  .site-intro p { font-size: 14px; }
-  .grid .link-card { width: 100%; height: 100px; }
-  .link-card h3 { font-size: 15px; }
-  .link-card p { font-size: 12px; }
+@media (max-width: 1024px) and (min-width: 481px) and (orientation: landscape) {
+  .site-intro h1 { font-size: 48px; }
+  .site-intro p { font-size: 17px; }
+  .grid .link-card { width: 100%; height: 120px; }
+  .link-card h3 { font-size: 14px; }
+  .link-card p { font-size: 11px; }
   .links-dots .dot { width: 10px; height: 3px; }
   .links-dots .dot.active { width: 16px; }
   
   /* 平板横屏布局优化 */
   .site-intro {
-    padding: 20px 0 15px;
+    padding: 15px 0;
   }
   
   .site-links {
     padding: 15px 0;
+    transform: translateY(-20px); /* 平板横屏上移20px */
   }
   
   .site-footer {
-    padding: 15px 0 10px;
-    margin-top: auto;
+    padding: 0;
   }
   
   /* 平板横屏深色模式卡片背景不变色 */
   .dark .link-card {
     background: var(--bg-color) !important;
   }
-  
 }
 
 /* 手机横屏 (≤480px 且 landscape) - 使用桌面版布局 */
@@ -261,7 +293,7 @@ footer.site-footer a {
   /* 使用桌面版样式，不进行任何缩放 */
   .site-intro h1 { font-size: 64px; }
   .site-intro p { font-size: 20px; }
-  .grid .link-card { width: auto; height: auto; }
+  .grid .link-card { width: 100%; height: 120px; }
   .link-card h3 { font-size: 16px; }
   .link-card p { font-size: 14px; }
   .links-dots .dot { width: 12px; height: 4px; }
@@ -270,34 +302,24 @@ footer.site-footer a {
   .footer-social { margin-top: 10px; gap: 20px; }
   .footer-social .icon { font-size: 16px; }
   
-  /* 桌面版布局 */
+  /* 手机横屏布局优化 */
   .site-intro {
     padding: 20px 0;
   }
   
   .site-links {
     padding: 20px 0;
+    transform: translateY(-20px); /* 手机横屏上移20px */
   }
   
   .site-footer {
-    padding: 24px 0 20px;
+    padding: 0;
   }
   
   header.site-header {
-    padding: 16px 0;
+    padding: 0;
   }
   
-  /* 桌面版网格布局 */
-  .grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important;
-    padding: 0 !important;
-  }
-  
-  .link-card {
-    min-height: 120px !important;
-    padding: 20px !important;
-  }
 }
 
 /* 手机竖屏 (≤480px 且 portrait) */
@@ -305,29 +327,32 @@ footer.site-footer a {
   .site-intro h1 { font-size: 28px; }
   .site-intro p { font-size: 13px; }
   .grid .link-card { width: 100%; height: 100px; }
-  .link-card h3 { font-size: 15px; }
-  .link-card p { font-size: 12px; }
+  .link-card h3 { font-size: 14px; }
+  .link-card p { font-size: 11px; }
   .links-dots .dot { width: 10px; height: 3px; }
   .links-dots .dot.active { width: 15px; }
   .site-footer > .container { font-size: 13px; }
   .footer-social { margin-top: 5px; gap: 20px; }
   .footer-social .icon { font-size: 14px; }
   
-  /* 进一步减少手机端留白 */
+  /* 手机端模块填充优化 */
   .site-intro {
-    padding: 10px 0 5px;
-    transform: translateY(-60px);
+    padding: 15px 0;
   }
   
   .site-links {
-    padding: 5px 0;
-    transform: translateY(-60px);
+    padding: 15px 0;
+    transform: translateY(-20px); /* 手机竖屏上移20px */
   }
   
-  /* 减少header下方留白 */
+  /* 手机端 Header 样式统一 */
   header.site-header {
-    padding: 12px 0;
-    margin-top: -30px;
+    padding: 0;
+  }
+  
+  /* 手机端 Footer 样式统一 */
+  .site-footer {
+    padding: 0;
   }
   
   /* 手机版深色模式卡片背景不变色 */
