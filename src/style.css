@@ -1,0 +1,371 @@
+/* ==================== 通用工具类 ==================== */
+/* 可点击元素工具类 */
+.clickable {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+/* ==================== 字体配置 ==================== */
+/* 字体变量定义 - 通过 JavaScript 动态设置 */
+:root {
+  --global-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --header-font: var(--global-font);
+  --intro-title-font: var(--global-font);
+  --intro-subtitle-font: var(--global-font);
+  --footer-site-font: var(--global-font);
+}
+
+/* 备用字体定义 - 直接 CSS 方式 */
+@font-face {
+  font-family: 'brand';
+  src: url('/fonts/brand.ttf') format('truetype');
+  font-display: swap;
+}
+
+:root { 
+  color-scheme: light; 
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --text-muted: #666666;
+  --border-color: #e5e5e5;
+  --card-bg: #ffffff;
+  --card-border: rgba(0,0,0,0.10);
+  --shadow: inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -2px 4px rgba(0,0,0,0.06);
+}
+
+.dark {
+  color-scheme: dark;
+  --bg-color: #0a0a0a;
+  --text-color: #f5f5f5;
+  --text-muted: #888888;
+  --border-color: #333333;
+  --card-bg: #1a1a1a;
+  --card-border: rgba(255,255,255,0.08);
+  --shadow: inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -2px 4px rgba(0,0,0,0.4);
+}
+
+html, body { 
+  height:100%; 
+  margin:0; 
+  padding:0; 
+  overflow:hidden; 
+  min-width: 320px; 
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 移动端和平板端允许滚动 */
+@media (max-width: 1024px) {
+  html, body { 
+    overflow: auto;
+    height: auto;
+    min-height: 100vh;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+body { 
+  font-family: var(--global-font); 
+  color: var(--text-color); 
+}
+.container { padding: 0 24px; }
+/* Header */
+header.site-header { padding:16px 0; }
+header.site-header .container { display:flex; align-items:center; }
+header.site-header strong { font-weight:700; font-size:18px; margin-left:100px; }
+
+/* Intro */
+.site-intro { padding:0; text-align:center; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; }
+.site-intro h1 { font-size:64px; font-weight:800; margin:0 0 12px; color: var(--text-color); }
+.site-intro p { font-size:20px; color: var(--text-muted); margin:0; }
+
+/* Links */
+.site-links { padding:0; position:relative; z-index:100; flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+.links-viewport { overflow-x:hidden; overflow-y:hidden; width:100%; padding: 20px 0 0; }
+.links-dots{ display:flex; justify-content:center; gap:10px; margin-top: 15px; margin-bottom: 80px; position:relative; z-index:200; }
+.links-dots .dot{ width:15px; height:5px; border-radius:2.5px; background: var(--text-muted); transition:background .25s ease,width .25s ease,transform .2s ease; cursor:pointer; position:relative; z-index:300; }
+.links-dots .dot:hover{ transform: scale(1.5); }
+.links-dots .dot.active{ background: var(--text-color); width:20px; }
+.links-dots .dot.active:hover{ transform: scale(1.5); }
+
+/* Layout */
+#app { display:flex; flex-direction:column; height:100vh; overflow:hidden; }
+.site-main { flex:1 0 auto; display: flex; flex-direction: column; min-height: 0; }
+.site-footer { 
+  text-align:center; 
+  color: var(--text-muted); 
+  padding: 24px 0 5px; 
+  margin-top:auto; 
+  flex-shrink: 0; 
+  position: sticky; 
+  bottom: 0; 
+  z-index: 1000;
+  background-color: var(--bg-color);
+}
+/* 仅缩小 Footer 文字信息区域字号，不影响社交模块 */
+.site-footer > .container { 
+  font-size:15px; 
+}
+footer.site-footer::before{ content:""; display:block; width:70%; height:1px; margin:0 auto 8px; background:linear-gradient(90deg,rgba(0,0,0,0) 0%, var(--border-color) 12%, var(--border-color) 88%, rgba(0,0,0,0) 100%);} 
+/* Footer 主体文本链接：中间向两侧扩张的下划线，颜色继承，略加粗 */
+footer.site-footer a,
+footer.site-footer a:link,
+footer.site-footer a:visited { 
+  color: inherit; 
+  text-decoration: none; 
+  font-weight: 500; 
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: center 100%;
+  background-size: 0% 2px;
+  transition: background-size .3s ease-out;
+}
+footer.site-footer a:hover { 
+  text-decoration: none; 
+  background-size: 100% 2px; 
+}
+
+/* Footer链接保持可点击状态 */
+footer.site-footer a {
+  cursor: pointer !important;
+}
+.footer-social { margin-top: 5px; display:flex; justify-content:center; gap:30px; flex-wrap:wrap; color: var(--text-color); }
+.footer-social a { 
+  color: inherit; 
+  text-decoration: none; 
+  font-weight: 500; 
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: center 100%;
+  background-size: 0% 2px;
+  transition: background-size .3s ease-out;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer !important;
+}
+.footer-social a:hover { 
+  background-size: 100% 2px; 
+}
+.footer-social .icon { font-size:16px; line-height:1; display:inline-flex; align-items:center; }
+
+/* 响应式设计 - 最优自适应方案 */
+.grid { gap: 20px; }
+
+/* 桌面 (1025px+) */
+@media (min-width: 1025px) {
+  .site-intro h1 { font-size: 64px; }
+  .site-intro p { font-size: 20px; }
+  .grid .link-card { width: 100%; height: 120px; }
+  .link-card h3 { font-size: 18px; }
+  .link-card p { font-size: 14px; }
+}
+
+/* 笔记本 (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .site-intro h1 { font-size: 56px; }
+  .site-intro p { font-size: 18px; }
+  .grid .link-card { width: 100%; height: 120px; }
+  .link-card h3 { font-size: 17px; }
+  .link-card p { font-size: 14px; }
+}
+
+/* 平板竖屏 (481px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) and (orientation: portrait) {
+  .site-intro h1 { font-size: 42px; }
+  .site-intro p { font-size: 15px; }
+  .grid .link-card { width: 100%; height: 110px; }
+  .link-card h3 { font-size: 16px; }
+  .link-card p { font-size: 13px; }
+  .links-dots .dot { width: 12px; height: 4px; }
+  .links-dots .dot.active { width: 18px; }
+  
+  /* 平板竖屏布局优化 */
+  .site-intro {
+    padding: 30px 0 20px;
+    margin-top: -200px;
+  }
+  
+  .site-links {
+    padding: 20px 0;
+    margin-top: -300px;
+  }
+  
+  .site-footer {
+    padding: 20px 0 15px;
+    margin-top: auto;
+  }
+  
+  /* 平板竖屏深色模式卡片背景不变色 */
+  .dark .link-card {
+    background: var(--bg-color) !important;
+  }
+  
+  /* 平板竖屏按钮颜色跟随系统 */
+  .mobile-theme-btn {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+  }
+  
+  .mobile-theme-btn:hover {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+  }
+}
+
+/* 平板横屏 (481px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) and (orientation: landscape) {
+  .site-intro h1 { font-size: 36px; }
+  .site-intro p { font-size: 14px; }
+  .grid .link-card { width: 100%; height: 100px; }
+  .link-card h3 { font-size: 15px; }
+  .link-card p { font-size: 12px; }
+  .links-dots .dot { width: 10px; height: 3px; }
+  .links-dots .dot.active { width: 16px; }
+  
+  /* 平板横屏布局优化 */
+  .site-intro {
+    padding: 20px 0 15px;
+    margin-top: -100px;
+  }
+  
+  .site-links {
+    padding: 15px 0;
+    margin-top: -100px;
+  }
+  
+  .site-footer {
+    padding: 15px 0 10px;
+    margin-top: auto;
+  }
+  
+  /* 平板横屏深色模式卡片背景不变色 */
+  .dark .link-card {
+    background: var(--bg-color) !important;
+  }
+  
+  /* 平板横屏按钮颜色跟随系统 */
+  .mobile-theme-btn {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+  }
+  
+  .mobile-theme-btn:hover {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+  }
+}
+
+/* 手机横屏 (≤480px 且 landscape) - 使用桌面版布局 */
+@media (max-width: 480px) and (orientation: landscape) {
+  /* 使用桌面版样式，不进行任何缩放 */
+  .site-intro h1 { font-size: 64px; }
+  .site-intro p { font-size: 20px; }
+  .grid .link-card { width: auto; height: auto; }
+  .link-card h3 { font-size: 16px; }
+  .link-card p { font-size: 14px; }
+  .links-dots .dot { width: 12px; height: 4px; }
+  .links-dots .dot.active { width: 18px; }
+  .site-footer > .container { font-size: 14px; }
+  .footer-social { margin-top: 10px; gap: 20px; }
+  .footer-social .icon { font-size: 16px; }
+  
+  /* 桌面版布局 */
+  .site-intro {
+    padding: 20px 0;
+    margin-top: 0;
+  }
+  
+  .site-links {
+    padding: 20px 0;
+    margin-top: 0;
+  }
+  
+  .site-footer {
+    padding: 24px 0 20px;
+  }
+  
+  header.site-header {
+    padding: 16px 0;
+  }
+  
+  /* 桌面版网格布局 */
+  .grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+    padding: 0 !important;
+  }
+  
+  .link-card {
+    min-height: 120px !important;
+    padding: 20px !important;
+  }
+}
+
+/* 手机竖屏 (≤480px 且 portrait) */
+@media (max-width: 480px) and (orientation: portrait) {
+  .site-intro h1 { font-size: 28px; }
+  .site-intro p { font-size: 13px; }
+  .grid .link-card { width: 100%; height: 100px; }
+  .link-card h3 { font-size: 15px; }
+  .link-card p { font-size: 12px; }
+  .links-dots .dot { width: 10px; height: 3px; }
+  .links-dots .dot.active { width: 15px; }
+  .site-footer > .container { font-size: 13px; }
+  .footer-social { margin-top: 5px; gap: 20px; }
+  .footer-social .icon { font-size: 14px; }
+  
+  /* 进一步减少手机端留白 */
+  .site-intro {
+    padding: 10px 0 5px;
+    margin-top: -200px;
+  }
+  
+  .site-links {
+    padding: 5px 0;
+    margin-top: -200px;
+  }
+  
+  /* 减少header下方留白 */
+  header.site-header {
+    padding: 12px 0;
+  }
+  
+  /* 手机版深色模式卡片背景不变色 */
+  .dark .link-card {
+    background: var(--bg-color) !important;
+  }
+  
+  /* 手机版按钮颜色跟随系统 */
+  .mobile-theme-btn {
+    background: transparent !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-color) !important;
+  }
+  
+  .mobile-theme-btn:hover {
+    background: var(--card-bg) !important;
+    color: var(--text-color) !important;
+    border-color: var(--border-color) !important;
+  }
+}
+
+/* Footer固定底部样式已在上方定义，此处删除重复 */
+
+
