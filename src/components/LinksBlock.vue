@@ -231,7 +231,7 @@ function handleDrag(e: MouseEvent | PointerEvent) {
   dx.value = e.clientX - startX.value;
   
   // 如果移动距离很小，不显示拖拽效果
-  if (Math.abs(dx.value) < 5) {
+  if (Math.abs(dx.value) < 2) {
     dx.value = 0;
   }
 }
@@ -244,8 +244,8 @@ function endDrag() {
     viewport.value.style.cursor = 'grab';
   }
   
-  // 根据拖拽距离决定翻页阈值（鼠标10px，触控80px）
-  const threshold = 10;
+  // 根据拖拽距离决定翻页阈值（鼠标5px，触控80px）
+  const threshold = 5;
   
   if (Math.abs(dx.value) > threshold) {
     if (dx.value < 0 && page.value < totalPages.value - 1) {
