@@ -134,7 +134,6 @@ function setSpecificFontToGlobal(target: string) {
   }
 }
 
-
 createApp(App).mount('#app');
 
 // 全局禁用右键菜单和文本选择
@@ -198,7 +197,3 @@ document.addEventListener('keydown', (e) => {
     return false;
   }
 });
-
-
-
-

@@ -15,5 +15,3 @@ import IntroBlock from './components/IntroBlock.vue';
 import LinksBlock from './components/LinksBlock.vue';
 import FooterBar from './components/FooterBar.vue';
 </script>
-
-

@@ -24,6 +24,3 @@ onMounted(async () => {
   if(res.ok){ socials.value = await res.json(); }
 });
 </script>
-
-
-

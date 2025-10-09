@@ -53,8 +53,6 @@ const copyrightYear = computed(() => {
   // 如果建站年份小于当前年份，显示年份范围
   return `${foundedYear}-${currentYear}`;
 });
-
-
 </script>
 
 <style scoped>
@@ -74,5 +72,3 @@ const copyrightYear = computed(() => {
   font-family: var(--footer-social-font, var(--global-font)) !important;
 }
 </style>
-
-
