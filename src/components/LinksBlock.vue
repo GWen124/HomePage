@@ -400,10 +400,10 @@ onUnmounted(() => {
 /* 桌面版悬浮效果 */
 @media (min-width: 1025px) {
   .link-card:hover { 
-    transform: translateY(-4px);
-    background: var(--bg-color);
-    border-color: var(--text-muted);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px) !important;
+    background: var(--bg-color) !important;
+    border-color: var(--text-color) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   }
 }
 
