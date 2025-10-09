@@ -399,7 +399,9 @@ onUnmounted(() => {
 @media (min-width: 1025px) {
   .link-card:hover { 
     transform: translateY(-4px);
-    background: var(--bg-color); 
+    background: var(--bg-color);
+    border-color: var(--text-muted);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
