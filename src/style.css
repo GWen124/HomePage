@@ -337,6 +337,7 @@ footer.site-footer a {
   /* 减少header下方留白 */
   header.site-header {
     padding: 12px 0;
+    margin-top: -30px;
   }
   
   /* 手机版深色模式卡片背景不变色 */
