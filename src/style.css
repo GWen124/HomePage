@@ -325,20 +325,21 @@ footer.site-footer a {
   .footer-social { margin-top: 5px; gap: 20px; }
   .footer-social .icon { font-size: 14px; }
   
-  /* 进一步减少手机端留白 */
+  /* 手机端竖屏整体布局优化 */
   .site-intro {
     padding: 10px 0 5px;
-    margin-top: -30px;
+    margin-top: -50px;
   }
   
   .site-links {
     padding: 5px 0;
+    margin-top: -20px;
   }
   
-  /* 减少header下方留白 */
+  /* Header 位置调整 */
   header.site-header {
     padding: 12px 0;
-    margin-top: -30px;
+    margin-top: -20px;
   }
   
   /* 手机版深色模式卡片背景不变色 */
