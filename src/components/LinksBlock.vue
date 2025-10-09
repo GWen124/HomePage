@@ -9,11 +9,11 @@
                <div class="links-track" :style="{ transform: `translateX(calc(-${page*100}% + ${dx}px))` }">
                  <div class="grid" v-for="(group, gi) in paged" :key="gi" :style="{ gridTemplateColumns: `repeat(${currentColumns}, 1fr)` }">
            <a v-for="(item, idx) in group" :key="item.name + idx" class="link-card" :href="item.link" target="_blank" rel="noopener" :class="{ 'is-placeholder': !item.name }" @click="handleCardClick($event, item)">
-          <Icon size="35">
+          <Icon size="35" v-if="item.name">
             <component :is="iconMap[item.icon] || Link" />
           </Icon>
-          <h3>{{ item.name }}</h3>
-          <p>{{ item.description }}</p>
+          <h3 v-if="item.name">{{ item.name }}</h3>
+          <p v-if="item.name">{{ item.description }}</p>
             </a>
           </div>
         </div>
@@ -389,7 +389,12 @@ onUnmounted(() => {
   transition: border-color .2s ease, background-color .2s ease, transform .3s ease, box-shadow .3s ease; 
   cursor: pointer; 
 }
-.link-card.is-placeholder { visibility: hidden; pointer-events: none; }
+.link-card.is-placeholder { 
+  opacity: 0; 
+  pointer-events: none; 
+  background: transparent;
+  border: 1px solid transparent;
+}
 /* 桌面版悬浮效果 */
 @media (min-width: 1025px) {
   .link-card:hover { 
