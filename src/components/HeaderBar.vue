@@ -15,7 +15,7 @@
             <button
               v-for="(mode, index) in themeModes"
               :key="mode.value"
-              @click="selectTheme(mode.value)"
+              @click="selectTheme(mode.value as ThemeMode)"
               class="theme-menu-item"
               :class="{ 'is-active': themeMode === mode.value }"
               :title="mode.label"
@@ -374,11 +374,13 @@ onUnmounted(() => {
 /* 移动端专用主题切换 */
 .mobile-theme-switcher {
   display: none;
+  position: relative;
+  z-index: 1001;
 }
 
 .mobile-theme-btn {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   padding: 8px;
   cursor: pointer;
@@ -388,34 +390,39 @@ onUnmounted(() => {
   color: #6b7280;
   width: 36px;
   height: 36px;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: none;
+  box-shadow: none;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001;
 }
 
 .mobile-theme-btn:hover {
-  background: #f9fafb;
-  color: #374151;
-  border-color: #d1d5db;
+  background: transparent;
+  color: #6b7280;
+  border: none;
 }
 
 .mobile-theme-btn:active {
-  transform: scale(0.95);
+  transform: none;
 }
 
 :global(.dark) .mobile-theme-btn {
-  background: #1f2937;
-  border-color: #374151;
+  background: transparent;
+  border: none;
   color: #9ca3af;
 }
 
 :global(.dark) .mobile-theme-btn:hover {
-  background: #374151;
-  color: #f3f4f6;
-  border-color: #4b5563;
+  background: transparent;
+  color: #9ca3af;
+  border: none;
 }
 
 /* 响应式显示控制 */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktop-only {
     display: none !important;
   }
@@ -423,14 +430,22 @@ onUnmounted(() => {
   .mobile-only {
     display: block !important;
   }
+  
+  .mobile-theme-switcher {
+    display: block !important;
+  }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .desktop-only {
     display: flex !important;
   }
   
   .mobile-only {
+    display: none !important;
+  }
+  
+  .mobile-theme-switcher {
     display: none !important;
   }
 }

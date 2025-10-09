@@ -76,7 +76,7 @@ const paged = computed(() => {
   if (last && last.length < pageSize.value) {
     const placeholders: LinkItem[] = Array(pageSize.value - last.length)
       .fill(null)
-      .map(() => ({ icon: '', name: '', description: '', link: 'javascript:void(0)' }));
+      .map(() => ({ icon: '', name: '', description: '', link: 'javascript:void(0)', isPlaceholder: true }));
     res[res.length - 1] = last.concat(placeholders);
   }
   return res.length ? res : [[]];
@@ -189,7 +189,7 @@ function handleTouchMove(e: TouchEvent) {
   }
 }
 
-function handleTouchEnd(e: TouchEvent) {
+function handleTouchEnd(_e: TouchEvent) {
   const touchDuration = Date.now() - touchState.value.startTime;
   
   // 若未进入拖拽状态，保持点击行为（打开链接）
