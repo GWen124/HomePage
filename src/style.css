@@ -183,7 +183,7 @@ footer.site-footer a {
   
   /* 桌面端模块填充优化 */
   .site-intro {
-    padding: 20px 0;
+    padding: 0;
   }
   
   .site-links {
@@ -209,7 +209,7 @@ footer.site-footer a {
   
   /* 平板端模块填充优化 */
   .site-intro {
-    padding: 25px 0;
+    padding: 0;
   }
   
   .site-links {
@@ -239,7 +239,7 @@ footer.site-footer a {
   
   /* 平板竖屏布局优化 */
   .site-intro {
-    padding: 20px 0;
+    padding: 0;
   }
   
   .site-links {
@@ -270,7 +270,7 @@ footer.site-footer a {
   
   /* 平板横屏布局优化 */
   .site-intro {
-    padding: 15px 0;
+    padding: 0;
   }
   
   .site-links {
@@ -304,7 +304,7 @@ footer.site-footer a {
   
   /* 手机横屏布局优化 */
   .site-intro {
-    padding: 20px 0;
+    padding: 0;
   }
   
   .site-links {
@@ -337,7 +337,7 @@ footer.site-footer a {
   
   /* 手机端模块填充优化 */
   .site-intro {
-    padding: 15px 0;
+    padding: 0;
   }
   
   .site-links {
