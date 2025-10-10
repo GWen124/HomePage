@@ -314,30 +314,45 @@ footer.site-footer a {
 
 /* 手机竖屏 (≤480px 且 portrait) */
 @media (max-width: 480px) and (orientation: portrait) {
-  .site-intro h1 { font-size: 28px; }
-  .site-intro p { font-size: 13px; }
-  .grid .link-card { width: 100%; height: 100px; }
-  .link-card h3 { font-size: 15px; }
-  .link-card p { font-size: 12px; }
-  .links-dots .dot { width: 10px; height: 3px; }
-  .links-dots .dot.active { width: 15px; }
+  .site-intro h1 { font-size: 32px; }
+  .site-intro p { font-size: 14px; }
+  .grid .link-card { width: 100%; height: 110px; }
+  .link-card h3 { font-size: 16px; }
+  .link-card p { font-size: 13px; }
+  .links-dots .dot { width: 12px; height: 4px; }
+  .links-dots .dot.active { width: 18px; }
   .site-footer > .container { font-size: 13px; }
   .footer-social { margin-top: 5px; gap: 20px; }
   .footer-social .icon { font-size: 14px; }
   
-  /* 进一步减少手机端留白 */
+  /* 手机端布局优化 */
   .site-intro {
-    padding: 10px 0 5px;
+    padding: 5px 0 5px;
+    margin-bottom: 10px;
+    transform: translateY(-50px);
   }
   
   .site-links {
     padding: 5px 0;
+    margin-top: 0;
+    transform: translateY(-50px);
   }
   
-  /* 减少header下方留白 */
+  /* 手机端header优化 */
   header.site-header {
-    padding: 12px 0;
+    padding: 15px 0 10px;
   }
+  
+  /* 手机端footer优化 */
+  .site-footer {
+    padding: 10px 0 5px;
+  }
+  
+  /* 手机端Footer分割线间距 */
+  footer.site-footer::before {
+    margin: 30px auto 8px !important;
+  }
+  
   
   /* 手机版深色模式卡片背景不变色 */
   .dark .link-card {
