@@ -4,7 +4,11 @@
     "icon": "Github",
     "url": "https://github.com/GWen124"
   },
- 
+  {
+    "name": "Blog",
+    "icon": "Blog",
+    "url": "https://blog.gw124.top/"
+  },
   {
     "name": "Email",
     "icon": "Envelope",
