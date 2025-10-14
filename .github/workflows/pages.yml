@@ -1,6 +1,5 @@
 name: 🚀 Deploy HomePage
 
-
 on:
   push:
     branches: [ main ]
@@ -26,6 +25,8 @@ env:
   NODE_VERSION: '20'
   BUILD_DIR: 'dist'
   WEB_BRANCH: 'Web'
+  TARGET_REPO: 'GWen124/HomePage'
+  TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
 
 permissions:
   contents: write
@@ -99,11 +100,12 @@ jobs:
           path: dist/
           retention-days: 1
 
-      - name: Checkout main branch
+      - name: Checkout target repository
         uses: actions/checkout@v4
         with:
+          repository: ${{ env.TARGET_REPO }}
           ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.TARGET_REPO_TOKEN }}
           fetch-depth: 0
 
       - name: Setup web branch
@@ -139,17 +141,11 @@ jobs:
             mv /tmp/.nojekyll.backup .nojekyll
           fi
           
-          # 如果 CNAME 文件不存在，从 main 分支获取
+          # 如果 CNAME 文件不存在，创建默认域名
           if [ ! -f CNAME ]; then
-            echo "CNAME file not found, fetching from main branch"
-            git fetch origin main:main
-            if [ -f ../main/CNAME ]; then
-              cp ../main/CNAME .
-              echo "CNAME file copied from main branch"
-            else
-              echo "gw124.top" > CNAME
-              echo "CNAME file created with default domain"
-            fi
+            echo "CNAME file not found, creating with target domain"
+            echo "gw124.top" > CNAME
+            echo "CNAME file created with target domain: gw124.top"
           fi
 
       - name: Download build artifacts
@@ -176,12 +172,13 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "🚀 Deploy: v${{ steps.build_info.outputs.build_number }} (${{ steps.build_info.outputs.build_time }})
+            git commit -m "🚀 Remote Deploy: v${{ steps.build_info.outputs.build_number }} (${{ steps.build_info.outputs.build_time }})
             
             📦 Build Info:
             - Version: v${{ steps.build_info.outputs.build_number }}
             - Hash: ${{ steps.build_info.outputs.build_hash }}
             - Time: ${{ steps.build_info.outputs.build_time }}
+            - Source: ${{ github.repository }}
             - Trigger: ${{ github.event_name }}
             - Actor: ${{ github.actor }}"
             
@@ -320,12 +317,13 @@ jobs:
       - name: Deployment Status
         run: |
           if [ "${{ needs.build-and-deploy.result }}" == "success" ] && [ "${{ needs.create-release.result }}" == "success" ]; then
-            echo "✅ 部署成功！"
-            echo "🌐 网站地址: https://your-domain.com"
+            echo "✅ 远程部署成功！"
+            echo "🌐 网站地址: https://gw124.top"
             echo "📦 发布版本: v${{ github.run_number }}"
+            echo "🎯 目标仓库: ${{ env.TARGET_REPO }}"
+            echo "🌿 部署分支: ${{ env.WEB_BRANCH }}"
           else
-            echo "❌ 部署失败！"
+            echo "❌ 远程部署失败！"
             echo "请检查工作流日志获取详细信息"
+            echo "🎯 目标仓库: ${{ env.TARGET_REPO }}"
           fi
-
-
