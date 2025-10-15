@@ -1,30 +1,16 @@
 name: 🚀 Deploy HomePage
 
-# ===========================================
-# 🔧 集中配置区域 - 只需修改此处即可
-# ===========================================
-# 工作流说明：
-# - A仓库：当前仓库（执行工作流，无需配置）
-# - B仓库：项目源码仓库（从 PROJECT_REPO 获取源码）
-# - C仓库：部署目标仓库（部署到 DEPLOY_REPO）
-# ===========================================
-env:
-  # 📂 项目源码仓库配置 (B仓库)
-  PROJECT_REPO: 'GWen124/HomePage'  # 项目源码仓库
-  PROJECT_BRANCH: 'main'            # 项目源码分支
-  
-  # 🚀 部署目标仓库配置 (C仓库)
-  DEPLOY_REPO: 'GWen124/HomePage'   # 部署目标仓库
-  DEPLOY_BRANCH: 'Web'              # 部署目标分支
-  
-  # 🌐 域名配置
-  DOMAIN: 'gw124.top'               # 部署域名
-  
-  # ⚙️ 构建配置
-  NODE_VERSION: '20'                # Node.js 版本
-  BUILD_DIR: 'dist'                 # 构建输出目录
 
 on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'tsconfig.json'
+      - '.github/workflows/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -35,6 +21,11 @@ on:
         options:
           - production
           - staging
+
+env:
+  NODE_VERSION: '20'
+  BUILD_DIR: 'dist'
+  WEB_BRANCH: 'Web'
 
 permissions:
   contents: write
@@ -47,12 +38,9 @@ jobs:
     name: 🔍 代码质量检查
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout project code (B仓库)
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.PROJECT_REPO }}
-          ref: ${{ env.PROJECT_BRANCH }}
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -78,12 +66,9 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     
     steps:
-      - name: Checkout project code (B仓库)
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.PROJECT_REPO }}
-          ref: ${{ env.PROJECT_BRANCH }}
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -114,27 +99,26 @@ jobs:
           path: dist/
           retention-days: 1
 
-      - name: Checkout deploy repository (C仓库)
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.DEPLOY_REPO }}
-          ref: ${{ env.DEPLOY_BRANCH }}
+          ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      - name: Setup deploy branch
+      - name: Setup web branch
         run: |
-          # 检查部署分支是否存在
-          if git show-ref --verify --quiet refs/remotes/origin/${{ env.DEPLOY_BRANCH }}; then
-            echo "Deploy branch exists, checking it out"
-            git checkout ${{ env.DEPLOY_BRANCH }}
+          # 检查 Web 分支是否存在
+          if git show-ref --verify --quiet refs/remotes/origin/${{ env.WEB_BRANCH }}; then
+            echo "Web branch exists, checking it out"
+            git checkout ${{ env.WEB_BRANCH }}
           else
-            echo "Deploy branch does not exist, creating it from main"
-            git checkout -b ${{ env.DEPLOY_BRANCH }}
-            git push origin ${{ env.DEPLOY_BRANCH }}
+            echo "Web branch does not exist, creating it from main"
+            git checkout -b ${{ env.WEB_BRANCH }}
+            git push origin ${{ env.WEB_BRANCH }}
           fi
 
-      - name: Clean deploy branch
+      - name: Clean web branch
         run: |
           # 备份重要文件
           if [ -f CNAME ]; then
@@ -155,10 +139,17 @@ jobs:
             mv /tmp/.nojekyll.backup .nojekyll
           fi
           
-          # 如果 CNAME 文件不存在，使用配置的域名
+          # 如果 CNAME 文件不存在，从 main 分支获取
           if [ ! -f CNAME ]; then
-            echo "${{ env.DOMAIN }}" > CNAME
-            echo "CNAME file created with configured domain: ${{ env.DOMAIN }}"
+            echo "CNAME file not found, fetching from main branch"
+            git fetch origin main:main
+            if [ -f ../main/CNAME ]; then
+              cp ../main/CNAME .
+              echo "CNAME file copied from main branch"
+            else
+              echo "gw124.top" > CNAME
+              echo "CNAME file created with default domain"
+            fi
           fi
 
       - name: Download build artifacts
@@ -176,7 +167,7 @@ jobs:
             sed -i "s|</head>|  <!-- Build Info: v${{ steps.build_info.outputs.build_number }} - ${{ steps.build_info.outputs.build_time }} - ${{ steps.build_info.outputs.build_hash }} -->\n</head>|" index.html
           fi
 
-      - name: Commit and push to deploy branch
+      - name: Commit and push to web branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -191,13 +182,10 @@ jobs:
             - Version: v${{ steps.build_info.outputs.build_number }}
             - Hash: ${{ steps.build_info.outputs.build_hash }}
             - Time: ${{ steps.build_info.outputs.build_time }}
-            - Source: ${{ env.PROJECT_REPO }}@${{ env.PROJECT_BRANCH }}
-            - Deploy: ${{ env.DEPLOY_REPO }}@${{ env.DEPLOY_BRANCH }}
-            - Domain: ${{ env.DOMAIN }}
             - Trigger: ${{ github.event_name }}
             - Actor: ${{ github.actor }}"
             
-            git push origin ${{ env.DEPLOY_BRANCH }}
+            git push origin ${{ env.WEB_BRANCH }}
           fi
 
   # 创建发布
@@ -208,12 +196,8 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
     
     steps:
-      - name: Checkout project code (B仓库)
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          repository: ${{ env.PROJECT_REPO }}
-          ref: ${{ env.PROJECT_BRANCH }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -302,10 +286,9 @@ jobs:
             - 🖥️ 大屏 (>1440px): 5列布局
             
             **🔗 相关链接**
-            - [📖 使用文档](https://github.com/${{ env.PROJECT_REPO }})
-            - [🐛 问题反馈](https://github.com/${{ env.PROJECT_REPO }}/issues)
-            - [💡 功能建议](https://github.com/${{ env.PROJECT_REPO }}/discussions)
-            - [🌐 在线预览](https://${{ env.DOMAIN }})
+            - [📖 使用文档](https://github.com/GWen124/HomePage)
+            - [🐛 问题反馈](https://github.com/GWen124/HomePage/issues)
+            - [💡 功能建议](https://github.com/GWen124/HomePage/discussions)
             
           draft: false
           prerelease: false
@@ -338,13 +321,11 @@ jobs:
         run: |
           if [ "${{ needs.build-and-deploy.result }}" == "success" ] && [ "${{ needs.create-release.result }}" == "success" ]; then
             echo "✅ 部署成功！"
-            echo "🌐 网站地址: https://${{ env.DOMAIN }}"
+            echo "🌐 网站地址: https://your-domain.com"
             echo "📦 发布版本: v${{ github.run_number }}"
-            echo "📂 源码仓库: ${{ env.PROJECT_REPO }}"
-            echo "🚀 部署仓库: ${{ env.DEPLOY_REPO }}"
           else
             echo "❌ 部署失败！"
             echo "请检查工作流日志获取详细信息"
-            echo "📂 源码仓库: ${{ env.PROJECT_REPO }}"
-            echo "🚀 部署仓库: ${{ env.DEPLOY_REPO }}"
           fi
+
+
