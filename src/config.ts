@@ -33,9 +33,9 @@ export const SITE_CONFIG = {
   // 例如：建站2024年，当前2024年 → 显示 © 2024
   SITE_FOUNDED_DATE: '2025-10-01',
   // 站点名称：页脚中显示的可点击站点名称
-  FOOTER_SITE: 'GW124.TOP',
+  FOOTER_SITE: 'GW124.COM',
   // 站点链接：点击站点名称跳转的URL地址
-  FOOTER_SITE_URL: 'https://gw124.top/',
+  FOOTER_SITE_URL: 'https://gw124.com/',
   // 社交链接：是否显示页脚下方的社交链接模块
   FOOTER_SOCIAL_ENABLED: true,
 
@@ -64,9 +64,9 @@ export const SITE_CONFIG = {
   FOOTER_SITE_FONT: '',
   
   // ==================== 页脚专用字体配置 ====================
-  // 页脚链接文字字体：GW124.TOP 和 Wen 可点击链接文字（优先级最高）
+  // 页脚链接文字字体：GW124.COM 和 Wen 可点击链接文字（优先级最高）
   FOOTER_LINKS_FONT: '',
-  // 页脚版权信息字体：© 2025 GW124.TOP · Powered by Wen 整体文字
+  // 页脚版权信息字体：© 2025 GW124.COM · Powered by Wen 整体文字
   FOOTER_COPYRIGHT_FONT: 'brand',
   // 页脚社交模块字体：社交链接图标和文字
   FOOTER_SOCIAL_FONT: 'brand'
