@@ -147,7 +147,7 @@ jobs:
               cp ../main/CNAME .
               echo "CNAME file copied from main branch"
             else
-              echo "gw124.top" > CNAME
+              echo "gw124.com" > CNAME
               echo "CNAME file created with default domain"
             fi
           fi
